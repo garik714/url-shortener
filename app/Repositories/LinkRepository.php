@@ -3,9 +3,15 @@
 namespace App\Repositories;
 
 use App\Models\Link;
+use Illuminate\Database\Eloquent\Builder;
 
 class LinkRepository implements LinkRepositoryInterface
 {
+    public function query(): Builder
+    {
+        return Link::query();
+    }
+
     public function save($link): Link
     {
         if (!$link->save()) {
@@ -16,6 +22,7 @@ class LinkRepository implements LinkRepositoryInterface
 
     public function find(string $url)
     {
-        return Link::where('original_url', $url)->first();
+        $query = $this->query();
+        return $query->where('original_url', $url)->first();
     }
 }
